@@ -1,5 +1,4 @@
 Flask
 requests
-wsgiref
 gunicorn
 slacker
