@@ -1,5 +1,5 @@
-Flask==0.10.1
+Flask
 requests
 wsgiref
 gunicorn
-slacker==0.4.0
+slacker
