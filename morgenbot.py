@@ -6,9 +6,7 @@ import json
 import datetime
 import time
 import random
-
 from slacker import Slacker
-
 from flask import Flask, request
 
 debug = os.getenv('DEBUG', False)
@@ -22,19 +20,8 @@ slack = Slacker(os.getenv('TOKEN'))
 username = os.getenv('USERNAME', 'morgenbot')
 icon_emoji = os.getenv('ICON_EMOJI', ':coffee:')
 channel = os.getenv('CHANNEL', '#standup')
-ignore_users = os.getenv('IGNORE_USERS', '[]')
 
-init_greeting = os.getenv('INIT_GREETING', 'Good morning!')
 start_message = os.getenv('START_MESSAGE', 'What did you work on yesterday? What are you working on today? What, if any, are your blockers?')
-
-commands = ['standup','start','cancel','next','skip','later','table','left','ignore','heed','ignoring','ready','help']
-
-users = []
-topics = []
-time = []
-in_progress = False
-current_user = ''
-absent_users = []
 
 def post_message(text, attachments=[]):
     slack.chat.post_message(channel     = channel,
@@ -44,15 +31,6 @@ def post_message(text, attachments=[]):
                             link_names  = 1,
                             attachments = attachments,
                             icon_emoji  = icon_emoji)
-
-def get_user(id):
-    user = slack.users.info(id).body
-    return user['user']['name']
-
-
-def get_channel(id):
-    channel = slack.channels.info(id).body
-    return channel['channel']['name']
 
 
 def start():
@@ -75,6 +53,8 @@ def main():
     args = text[text.find("!%s" % command) + len(command) + 1:]
     command = command.lower()
 
+    print(command)
+    
     if command == "!start":
         start()
         return json.dumps({ })
