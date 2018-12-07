@@ -377,5 +377,11 @@ def main():
         
     return json.dumps({ })
 
+
+@app.route("/daily", methods=['GET'])
+def daily():
+    post_message('Standup time!')
+    post_message('!start')
+
 if __name__ == "__main__":
     app.run(debug=True)
