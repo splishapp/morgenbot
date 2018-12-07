@@ -11,7 +11,10 @@ import urllib2
 from slacker import Slacker
 
 from flask import Flask, request
+
+debug = os.getenv('DEBUG', False)
 app = Flask(__name__)
+app.debug = debug
 
 curdir = os.path.dirname(os.path.abspath(__file__))
 os.chdir(curdir)
