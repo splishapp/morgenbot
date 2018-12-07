@@ -77,7 +77,9 @@ def main():
 
     if command == "!start":
         start()
-        
+        return json.dumps({ })
+
+    print('not a valid command')
     return json.dumps({ })
 
 
