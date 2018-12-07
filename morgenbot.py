@@ -52,14 +52,11 @@ def main():
     command = match[0]
     args = text[text.find("!%s" % command) + len(command) + 1:]
     command = command.lower()
-
-    print(command)
     
-    if command == "!start":
+    if command == "start":
         start()
         return json.dumps({ })
 
-    print('not a valid command')
     return json.dumps({ })
 
 
