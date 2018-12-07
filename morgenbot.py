@@ -36,7 +36,6 @@ def post_message(text, attachments=[]):
 
 def start():
     post_message(start_message)
-    next()
 
 
 @app.route("/", methods=['POST'])
