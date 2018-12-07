@@ -8,6 +8,7 @@ import time
 import random
 from slacker import Slacker
 from flask import Flask, request
+from datetime import date
 
 debug = os.getenv('DEBUG', False)
 app = Flask(__name__)
@@ -62,8 +63,8 @@ def main():
 
 @app.route("/daily", methods=['GET'])
 def daily():
-    post_message('Standup time!')
-    post_message('!start')
+    if date.today().weekday() in [0,1,2,3,4,5]:
+        start()
 
 
 if __name__ == "__main__":
