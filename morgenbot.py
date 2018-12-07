@@ -6,7 +6,6 @@ import json
 import datetime
 import time
 import random
-import urllib2
 
 from slacker import Slacker
 
@@ -27,8 +26,6 @@ ignore_users = os.getenv('IGNORE_USERS', '[]')
 
 init_greeting = os.getenv('INIT_GREETING', 'Good morning!')
 start_message = os.getenv('START_MESSAGE', 'What did you work on yesterday? What are you working on today? What, if any, are your blockers?')
-
-giphy = True if os.getenv('GIPHY', 'false').lower() == 'true' else False
 
 commands = ['standup','start','cancel','next','skip','later','table','left','ignore','heed','ignoring','ready','help']
 
@@ -241,23 +238,6 @@ def tabled():
     for topic in topics:
         post_message('-%s' % topic)
 
-def giphy(text):
-    url = 'http://api.giphy.com/v1/gifs/search?q=%s&api_key=dc6zaTOxFJmzC&limit=1' % urllib2.quote(text.encode("utf8"))
-    response = urllib2.urlopen(url)
-    data = json.loads(response.read())
-
-    if len(data['data']) == 0:
-        post_message('Not sure what "%s" is.' % text)
-    else:
-        attachments = [{
-            'fallback': text,
-            'title': text,
-            'title_link': data['data'][0]['url'],
-            'image_url': data['data'][0]['images']['fixed_height']['url']
-        }]
-
-        post_message('Not sure what "%s" is.' % text, json.dumps(attachments))
-
 def ready(msguser):
     global ignore_users
     global absent_users
@@ -322,8 +302,6 @@ def help(topic=''):
         post_message('Type !ready to skip ahead in the queue and give your standup immediately')
     else:
         post_message('Not sure what "%s" is.' % topic)
-        if giphy:
-            post_message('/giphy %s' % topic)
 
 @app.route("/", methods=['POST'])
 def main():
@@ -342,10 +320,7 @@ def main():
     command = command.lower()
 
     if command not in commands:
-        if giphy:
-            giphy("%s %s" % (command, args))
-        else:
-            post_message('Not sure what "%s" is.' % command)
+        post_message('Not sure what "%s" is.' % command)
         return json.dumps({ })
     elif not in_progress and command != 'standup' and command != 'help' and command != 'ignore' and command != 'heed' and command != 'ignoring':
         post_message('Looks like standup hasn\'t started yet. Type !standup.')
