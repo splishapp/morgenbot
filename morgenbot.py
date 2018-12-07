@@ -329,6 +329,7 @@ def main():
     if msguser == username or msguser.lower() == "slackbot": return
 
     text = request.form.get("text", "")
+    print(text)
 
     match = re.findall(r"^!(\S+)", text)
     if not match: return
