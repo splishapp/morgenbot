@@ -62,7 +62,7 @@ def main():
 
 @app.route("/daily", methods=['GET'])
 def daily():
-    if date.today().weekday() in [0,1,2,3,4,5]:
+    if date.today().weekday() in [0,1,2,3,4]:
         start()
 
 
